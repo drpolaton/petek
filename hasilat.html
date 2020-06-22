@@ -21,7 +21,7 @@
     <meta property="og:title" content="Bal Hasılatı - Bal Peteği">
     <meta property="og:description" content="Dr. Polaton ile Arıların Polenlerini Topladığı Arı Kovanı">
     <meta property="og:image"
-          content="https://raw.githubusercontent.com/drpolaton/petek/master/assets/img/organic.svg">
+          content="https://raw.githubusercontent.com/drpolaton/petek/master/assets/img/organic.png">
 
     <!-- Twitter Önizleme Etiketleri -->
     <meta property="twitter:card" content="summary_large_image">
@@ -29,23 +29,13 @@
     <meta property="twitter:title" content="Bal Hasılatı - Bal Peteği">
     <meta property="twitter:description" content="Dr. Polaton ile Arıların Polenlerini Topladığı Arı Kovanı">
     <meta property="twitter:image"
-          content="https://raw.githubusercontent.com/drpolaton/petek/master/assets/img/organic.svg">
+          content="https://raw.githubusercontent.com/drpolaton/petek/master/assets/img/organic.png">
 
-    <!-- Yazı Tipleri ve Simgeler -->
+    <!-- Tema Stil Tanımları -->
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-
-    <!-- SSL Yönlendirmesi -->
-    <script language="javascript">
-        if (document.location.protocol != "https:")
-        {
-            document.location.href = "https://" + window.location.hostname + document.location.pathname;
-        };
-    </script>
-
-    <!-- Material Kit CSS -->
-    <link href="assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet"/>
+    <link href="assets/css/material-dashboard.min.css" rel="stylesheet"/>
 
     <!-- jQquery ve Firebase Kütüphaneleri -->
     <script src="assets/js/core/jquery.min.js"></script>
@@ -54,8 +44,9 @@
     <script src="assets/js/core/firebasejs/7.15.0/firebase-auth.js"></script>
     <script src="assets/js/core/firebasejs/7.15.0/firebase-database.js"></script>
 
-    <!-- Yüklenme Öncesi İşlemler -->
-    <script src="assets/js/app/hasilat.0.2.3.js"></script>
+    <!-- Petek Kodları -->
+    <script src="assets/js/app/global.0.2.0.js"></script>
+    <script src="assets/js/app/hasilat.0.5.3.js"></script>
 
 </head>
 
@@ -99,7 +90,7 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="soru-gir.html">
                         <i class="material-icons">alarm_add</i>
-                        <p>Soru Gir</p>
+                        <p>Soru & Konu Gir</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -127,6 +118,9 @@
                 <div class="navbar-wrapper">
                     <a class="navbar-brand">Bal Hasılatı</a>
                     <i id="ekranAtif"></i>
+                </div>
+                <div class="navbar-wrapper">
+                    <a id="erkanAtifSoruSayisi"></a>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index"
                         aria-expanded="false" aria-label="Toggle navigation">

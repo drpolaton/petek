@@ -1,21 +1,3 @@
-// firebase ön tanımları
-var config = {
-    apiKey: "AIzaSyDcNJORpxWVaIFhTa23D3k6D49hu3v-dKM",
-    authDomain: "bal-petegi-cf9c9.firebaseapp.com",
-    databaseURL: "https://bal-petegi-cf9c9.firebaseio.com",
-    projectId: "bal-petegi-cf9c9",
-    storageBucket: "bal-petegi-cf9c9.appspot.com",
-    messagingSenderId: "51545633996",
-    appId: "1:51545633996:web:8020e1aa7c77dd69573e69",
-    measurementId: "G-N08LMFPGDK"
-};
-
-// firebase bağlantısı başlat
-firebase.initializeApp(config);
-firebase.analytics()
-
-var current_user = "";
-
 // doküman yüklendiğinde
 $(document).ready(function () {
 
@@ -108,7 +90,12 @@ $(document).ready(function () {
             var userRef = firebase.database().ref().child("users/" + current_user);
             userRef.on("value", function (snapshot) {
                 if (snapshot.val()) {
-                    guncelleAtif(snapshot.val().name, snapshot.val().surname)
+                    try{
+                        guncelleAtif(snapshot.val().name, snapshot.val().surname)
+                        hesaplaToplamSoruAtif(snapshot.val()['records'])
+                    }catch (e) {
+                        console.warn(e)
+                    }
 
                     // kullanıcı sınıf bilgisini tanımla
                     var grade = snapshot.val().grade
@@ -978,15 +965,15 @@ $(document).ready(function () {
 
     // giriş yapıldığında net bilgisini güncelle
     document.getElementById('denemeDogru').addEventListener("keyup", function (evt) {
-        console.log(this.value);
+        //console.log(this.value);
         netGuncelle();
     }, false);
     document.getElementById('denemeYanlis').addEventListener("keyup", function (evt) {
-        console.log(this.value);
+        //console.log(this.value);
         netGuncelle();
     }, false);
     document.getElementById('denemeBos').addEventListener("keyup", function (evt) {
-        console.log(this.value);
+        //console.log(this.value);
         netGuncelle();
     }, false);
     $('#tipDeneme').on('change', function () {
@@ -999,20 +986,12 @@ $(document).ready(function () {
     anlikZamaniDenemeKaydiGirKismindaGoster();
 })
 
-// oturumu kapat butonuna tıklandığıdna
-$("#logout").click(function () {
-    firebase.auth().signOut()
-        .then(function () {
-            window.location.href = "giris-yap.html";
-        })
-})
 
-// ekran üstünde kullanıcı adı ve soyadını göster
-function guncelleAtif(isim, soyisim) {
-    var kisi = isim + " " + soyisim;
-    var mesaj = 'Süper Arı ' + kisi;
-    $('#ekranAtif').text(mesaj);
-}
+
+
+/**
+ * Soru & Konu Gir Fonksiyonları
+ */
 
 /** anlık zamanı soru gir kısmında gösterir
  *  muaz wrote with support by dilruba - 20200527-005746
@@ -1190,10 +1169,10 @@ function netGuncelle() {
     var sinavTipi = $('#tipDeneme').val();
     var dogru = $('#denemeDogru').val();
     var yanlis = $('#denemeYanlis').val();
-    console.log("tip: " + sinavTipi)
-    console.log("doğru: " + dogru)
-    console.log("yanlış: " + yanlis)
+    //console.log("tip: " + sinavTipi)
+    //console.log("doğru: " + dogru)
+    //console.log("yanlış: " + yanlis)
     var net = netHesapla(Number(sinavTipi), Number(dogru), Number(yanlis));
-    console.log("net: " + net);
+    //console.log("net: " + net);
     $('#denemeNet').text("Net: " + net);
 }

@@ -1,21 +1,3 @@
-// firebase ön tanımları
-var config = {
-    apiKey: "AIzaSyDcNJORpxWVaIFhTa23D3k6D49hu3v-dKM",
-    authDomain: "bal-petegi-cf9c9.firebaseapp.com",
-    databaseURL: "https://bal-petegi-cf9c9.firebaseio.com",
-    projectId: "bal-petegi-cf9c9",
-    storageBucket: "bal-petegi-cf9c9.appspot.com",
-    messagingSenderId: "51545633996",
-    appId: "1:51545633996:web:8020e1aa7c77dd69573e69",
-    measurementId: "G-N08LMFPGDK"
-};
-
-// firebase bağlantısı başlat
-firebase.initializeApp(config);
-firebase.analytics()
-
-var current_user = "";
-
 // doküman yüklendiğinde
 $(document).ready(function () {
 
@@ -65,7 +47,12 @@ $(document).ready(function () {
                     }
                     // kullanıcı isim ve soyismini ekranda göster
                     $('#birthdate').val(snapshot.val().birthdate)
-                    guncelleAtif(snapshot.val().name, snapshot.val().surname)
+                    try{
+                        guncelleAtif(snapshot.val().name, snapshot.val().surname)
+                        hesaplaToplamSoruAtif(snapshot.val()['records'])
+                    }catch (e) {
+                        console.warn(e)
+                    }
                 }
             })
         } else {
@@ -76,18 +63,3 @@ $(document).ready(function () {
 
 
 })
-
-// oturumu kapat butonuna tıklandığıdna
-$("#logout").click(function () {
-    firebase.auth().signOut()
-        .then(function () {
-            window.location.href = "giris-yap.html";
-        })
-})
-
-// ekran üstünde kullanıcı adı ve soyadını göster
-function guncelleAtif(isim, soyisim) {
-    var kisi = isim + " " + soyisim;
-    var mesaj = 'Süper Arı ' + kisi;
-    $('#ekranAtif').text(mesaj);
-}

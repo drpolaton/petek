@@ -1,40 +1,22 @@
-var config = {
-    apiKey: "AIzaSyDcNJORpxWVaIFhTa23D3k6D49hu3v-dKM",
-    authDomain: "bal-petegi-cf9c9.firebaseapp.com",
-    databaseURL: "https://bal-petegi-cf9c9.firebaseio.com",
-    projectId: "bal-petegi-cf9c9",
-    storageBucket: "bal-petegi-cf9c9.appspot.com",
-    messagingSenderId: "51545633996",
-    appId: "1:51545633996:web:8020e1aa7c77dd69573e69",
-    measurementId: "G-N08LMFPGDK"
-};
-
-firebase.initializeApp(config);
-firebase.analytics()
-
-var current_user = "";
-
+// doküman yüklendiğinde
 $(document).ready(function () {
     // giriş kontrolü yap
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
 
             current_user = user.uid;
-            // console.log(current_user);
-
-            $("#logout").click(function () {
-                firebase.auth().signOut()
-                    .then(function () {
-                        window.location.href = "giris-yap.html";
-                    })
-            });
 
             // kullanıcı kayıtlarını çek
             var users = firebase.database().ref().child('users').child(current_user);
             users.on('value', function (snapshot) {
 
                 // kullanıcı isim ve soyismini ekranda göster
-                guncelleAtif(snapshot.val().name, snapshot.val().surname)
+                try{
+                    guncelleAtif(snapshot.val().name, snapshot.val().surname)
+                    hesaplaToplamSoruAtif(snapshot.val()['records'])
+                }catch (e) {
+                    console.warn(e)
+                }
 
                 // soru kayıtlarını çek
                 var shot = snapshot.val()['records'];
@@ -55,9 +37,6 @@ $(document).ready(function () {
                 var sonucHaftalikDersli = [];
                 var sonucDersli = [];
                 var listeGirilenSureler = {}
-
-                // console.log(keys.length);
-
 
                 // şimdiki zamana ait değeri hesapla
                 var simdi = new Date();
@@ -624,6 +603,10 @@ $(document).ready(function () {
     });
 });
 
+/**
+ * Hasılat Fonksiyonları
+ */
+
 function soruSil(key) {
     firebase.database().ref("users/" + current_user).child("records").child(key).remove();
 }
@@ -1163,11 +1146,4 @@ function guncelleToplamSoruSure(dersler, sorular, sureler) {
             }
         }
     });
-}
-
-// ekran üstünde kullanıcı adı ve soyadını göster
-function guncelleAtif(isim, soyisim) {
-    var kisi = isim + " " + soyisim;
-    var mesaj = 'Süper Arı ' + kisi;
-    $('#ekranAtif').text(mesaj);
 }
